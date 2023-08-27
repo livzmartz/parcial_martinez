@@ -1,7 +1,7 @@
 import { Dropdown } from "bootstrap";
 import Swal from "sweetalert2";
 import { validarFormulario, Toast, confirmacion} from "../funciones";
-import { lenguaje  } from "../lenguaje";
+import { lenguaje } from "../lenguaje";
 import Datatable from "datatables.net-bs5";
 
 const formulario = document.querySelector('formularioUsuario')
@@ -15,6 +15,8 @@ btnModificar.disabled = true
 btnModificar.parentElement.style.display = 'none'
 btnCancelar.disabled = true
 btnCancelar.parentElement.style.display = 'none'
+btnBuscar.disabled = true;
+btnBuscar.parentElement.style.display = 'none';
 
 let contador = 1; 
 const datatable = new Datatable('#tablaUsuarios', {
@@ -31,8 +33,8 @@ const datatable = new Datatable('#tablaUsuarios', {
             data: 'usu_nombre'
         },
         {
-            title : 'CATALOGO',
-            data: 'usu_catalogo',
+            title : 'USUARIO',
+            data: 'usu_usuario',
         },
         {
             title : 'CONTRASEÑA',
@@ -48,7 +50,7 @@ const datatable = new Datatable('#tablaUsuarios', {
             searchable : false,
             orderable : false,
             render : (data, type, row, meta) => `<button class="btn btn-warning" data-id='${data}' data-nombre='${row["usu_nombre"]}' 
-            data-catalogo='${row["usu_catalogo"]}' data-password='${row["usu_password"]}'>Modificar</button>`
+            data-usuario='${row["usu_usuario"]}' data-password='${row["usu_password"]}'>Modificar</button>`
         },
         {
             title : 'ELIMINAR',
@@ -63,10 +65,10 @@ const datatable = new Datatable('#tablaUsuarios', {
 
 const buscar = async () => {
     let usu_nombre = formulario.usu_nombre.value;
-    let usu_catalogo = formulario.usu_catalogo.value;
+    let usu_usuario = formulario.usu_usuario.value;
     let usu_password = formulario.usu_password.value;
     
-    const url = `/parcial_martinez/API/usuarios/buscar?usu_nombre=${usu_nombre}&usu_catalogo=${usu_catalogo}&usu_password=${usu_password}`;
+    const url = `/parcial_martinez/API/usuarios/buscar?usu_nombre=${usu_nombre}&usu_usuario=${usu_usuario}&usu_password=${usu_password}`;
     const config = {
         method : 'GET'
     }
@@ -99,7 +101,7 @@ const guardar = async (evento) => {
             icon: 'info',
             text: 'Debe llenar todos los datos'
         })
-        return 
+        return;
     }
 
     const body = new FormData(formulario)
@@ -211,13 +213,13 @@ const traeDatos = (e) => {
     const button = e.target;
     const id = button.dataset.id;
     const nombre = button.dataset.nombre;
-    const catalogo = button.dataset.catalogo;
+    const usuario = button.dataset.usuario;
     const password = button.dataset.password;
 
     const dataset = {
         id,
         nombre,
-        catalogo,
+        usuario,
         password
     };
 
@@ -225,14 +227,14 @@ const traeDatos = (e) => {
         const body = new FormData(formulario);
         body.append('usu_id', id);
         body.append('usu_nombre', nombre);
-        body.append('usu_catalogo', catalogo);
+        body.append('usu_usuario', usuario);
         body.append('usu_password', password);  
 
 };
 
 const colocarDatos = (dataset) => {
     formulario.usu_nombre.value = dataset.nombre;
-    formulario.usu_catalogo.value = dataset.catalogo;
+    formulario.usu_usuario.value = dataset.usuario;
     formulario.usu_password.value = dataset.password;
     formulario.usu_id.value = dataset.id;
     

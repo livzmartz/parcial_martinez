@@ -4,46 +4,34 @@ namespace Controllers;
 
 use Exception;
 use Model\Permiso;
-use Model\Usuario;
-use Model\Rol;
+//use Model\Rol;
 use MVC\Router;
 
 class PermisoController{
- 
-    public static function buscarUsuario(){
-        $sql = "SELECT * FROM usuarios where usu_situacion = '1'";
+    public static function index(Router $router) {
+
+    $usuario= Permiso::all();
+        $rol= Permiso::all();
+        $usuarios = static::usuarios();
+        $roles = static::roles();
+        $router->render('permisos/index', [
+            'permiso_usuario' => $usuario,
+            'permiso_rol' => $rol,
+            'usuarios' => $usuarios, 
+            'roles' => $roles
+       ]);
+     
+    }   
     
-        try {
-            $usuarios = Usuario::fetchArray($sql);
-    
-            return $usuarios;
-        } catch (Exception $e) {
+    public static function guardarApi(){
 
-            return [];
-            
-        }
-    }
-
-    public static function buscarRol(){
-        $sql = "SELECT * FROM roles where rol_situacion = '1'";
-    
-        try {
-            $roles = Rol::fetchArray($sql);
-            return $roles;
-
-        } catch (Exception $e) {
-            return [];
-            
-        }
-    }
-
-    public static function guardarAPI()
-    {
         try {
             $permiso = new Permiso($_POST);
+           
             $resultado = $permiso->crear();
-
+           
             if ($resultado['resultado'] == 1) {
+                
                 echo json_encode([
                     'mensaje' => 'Registro guardado correctamente',
                     'codigo' => 1
@@ -63,26 +51,21 @@ class PermisoController{
             ]);
         }
     }
-
+    
     public static function buscarAPI()
     {
         $usu_id = $_GET['usu_id'];
         $rol_id = $_GET['rol_id'];
 
-        $sql = "SELECT 
-        permisos.permiso_id, 
-        usuarios.usu_nombre AS permiso_usuario, 
-        usuarios.usu_id, 
-        roles.rol_nombre AS permiso_rol, 
-        roles.rol_id
-    FROM 
-        permisos
-    INNER JOIN 
-        usuarios ON permisos.permiso_usuario = usuarios.usu_id 
-    INNER JOIN 
-        roles ON permisos.permiso_rol = roles.rol_id 
-    WHERE 
-        permisos.permiso_situacion = '1'";
+        $sql = "SELECT p.permiso_id, u.usu_nombre AS permiso_usuario,
+        u.usu_id,r.rol_nombre AS permiso_rol,r.rol_id,
+        u.usu_situacion AS usu_estado, u.usu_password FROM permiso p
+    INNER JOIN
+        usuario u ON p.permiso_usuario = u.usu_id
+    INNER JOIN
+        rol r ON p.permiso_rol = r.rol_id
+    WHERE
+        p.permiso_situacion = '1'";
     
     if ($usu_id != '') {
         $sql .= " AND usuarios.usu_id = '$usu_id'";
@@ -105,4 +88,71 @@ class PermisoController{
             ]);
         }
     }
+
+    public static function modificarAPI()
+    {
+                
+        try {
+            $permiso = new Permiso($_POST);
+            $resultado = $permiso->actualizar();
+
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    'mensaje' => 'Registro modificado correctamente',
+                    'codigo' => 1
+                ]);
+            } else {
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error',
+                    'codigo' => 0
+                ]);
+            }
+
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    }
+ 
+    public  static function roles()
+    {
+        $sql = "SELECT * FROM rol WHERE rol_situacion = '1' ";
+        
+        try {
+            
+            $roles = Permiso::fetchArray($sql);
+ 
+            if ($roles){
+                
+                return $roles; 
+            }else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            
+        }
+    }
+    
+    public  static function usuarios()
+    {
+        $sql = "SELECT * FROM usuario ";
+        
+        try {
+            
+            $usuarios = Permiso::fetchArray($sql);
+ 
+            if ($usuarios){
+                
+                return $usuarios; 
+            }else {
+                return 0;
+            }
+        } catch (Exception $e) {
+            
+        }
+    }
+    
 }
