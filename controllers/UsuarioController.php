@@ -3,22 +3,21 @@
 namespace Controllers;
 
 use Exception;
-use Model\Rol;
+use Model\Usuario;
 use MVC\Router;
 
-class RolController {
-    public static function guardarAPI()
-    {
+class UsuarioController {
+    public static function guardarAPI(){
         try {
-            $rol = new Rol($_POST);
-            $resultado = $rol->crear();
+            $usuario = new Usuario($_POST);
+            $resultado = $usuario->crear();
 
-            if ($resultado['resultado'] == 1) {
+            if($resultado['resultado'] == 1){
                 echo json_encode([
                     'mensaje' => 'Registro guardado correctamente',
                     'codigo' => 1
                 ]);
-            } else {
+            }else{
                 echo json_encode([
                     'mensaje' => 'Ocurrió un error',
                     'codigo' => 0
@@ -33,21 +32,27 @@ class RolController {
             ]);
         }
     }
-    public static function buscarAPI()
-    {
-        $rol_nombre = $_GET['rol_nombre'] ?? '';
+  
+    public static function buscarAPI(){
+        // $usuarios = usuario::all();
+        $usu_nombre = $_GET['usu_nombre'];
+        $usu_catalogo = $_GET['usu_catalogo'];
 
-        $sql = "SELECT * FROM roles WHERE rol_situacion = 1 ";
-        if ($rol_nombre != '') {
-            $rol_nombre = strtolower($rol_nombre);
-            $sql .= " AND LOWER(rol_nombre) LIKE '%$rol_nombre%' ";
+        $sql = "SELECT * FROM usuarios WHERE usu_situacion = 1 ";
+        if ($usu_nombre != '') {
+            $usu_nombre = strtolower($usu_nombre);
+            $sql .= " AND LOWER(usu_nombre) LIKE '%$usu_nombre%' ";
+        }
+        if ($usu_catalogo != '') {
+            $usu_catalogo = strtolower($usu_catalogo);
+            $sql .= " AND usu_catalogo= '$usu_catalogo' ";
         }
 
         try {
-
-            $roles = Rol::fetchArray($sql);
-
-            echo json_encode($roles);
+            
+            $usuarios = Usuario::fetchArray($sql);
+    
+            echo json_encode($usuarios);
         } catch (Exception $e) {
             echo json_encode([
                 'detalle' => $e->getMessage(),
