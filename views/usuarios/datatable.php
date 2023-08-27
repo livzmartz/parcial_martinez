@@ -1,3 +1,20 @@
+<nav class="navbar navbar-dark bg-dark fixed-top navbar-expand-lg">
+    <a class="navbar-brand" href="/parcial_martinez/usuarios">Menú</a>
+
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/parcial_martinez/usuarios">Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/parcial_martinez/usuarios/estadistica">Estadistica</a>
+            </li>
+        </ul>
+    </div>
+    <a href="/parcial_martinez/logout" class="btn btn-danger">Cerrar sesión</a>
+</nav>
+<br>
 <h1 class="text-center">Creación y solicitud de usurio</h1>
 <div class="row justify-content-center mb-5">
     <form class="col-lg-8 border bg-light p-3" id="formularioUsuario">
