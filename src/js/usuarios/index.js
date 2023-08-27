@@ -4,7 +4,7 @@ import { validarFormulario, Toast, confirmacion} from "../funciones";
 import { lenguaje } from "../lenguaje";
 import Datatable from "datatables.net-bs5";
 
-const formulario = document.querySelector('formularioUsuario')
+const formulario = document.querySelector('form')
 const btnGuardar = document.getElementById('btnGuardar');
 const btnBuscar = document.getElementById('btnBuscar');
 const btnModificar = document.getElementById('btnModificar');
@@ -96,6 +96,7 @@ const buscar = async () => {
 
 const guardar = async (evento) => {
     evento.preventDefault();
+
     if(!validarFormulario(formulario, ['usu_id'])){
         Toast.fire({
             icon: 'info',
@@ -106,12 +107,6 @@ const guardar = async (evento) => {
 
     const body = new FormData(formulario)
     body.delete('usu_id')
-
-    const plainPassword = body.get('usu_password');
-    const hashedPassword = await bcrypt.hash(plainPassword, 10); 
-
-    // Utiliza la contraseña hasheada en lugar de la ingresada por el usuario
-    body.set('usu_password', hashedPassword);
 
     const url = '/parcial_martinez/API/usuarios/guardar';
     const headers = new Headers();
@@ -316,6 +311,7 @@ const modificar = async () => {
 
 buscar();
 
+console.log(formulario);
 formulario.addEventListener('submit', guardar)
 btnBuscar.addEventListener('click', buscar)
 btnCancelar.addEventListener('click', cancelarAccion)

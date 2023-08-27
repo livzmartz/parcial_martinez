@@ -55,7 +55,7 @@ class UsuarioController {
         $usu_nombre = $_GET['usu_nombre'];
         $usu_usuario = $_GET['usu_usuario'];
 
-        $sql = "SELECT * FROM usuarios WHERE usu_situacion = '1' ";
+        $sql = "SELECT * FROM usuario WHERE usu_situacion = '1' ";
         if ($usu_nombre != '') {
             $usu_nombre = strtolower($usu_nombre);
             $sql .= " AND LOWER(usu_nombre) LIKE '%$usu_nombre%' ";
