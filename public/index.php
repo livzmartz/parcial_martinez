@@ -19,6 +19,8 @@ $router->post('/API/login', [LoginController::class,'loginAPI']);
 
 $router->get('/API/usuarios/buscar', [UsuarioController::class,'buscarAPI']);
 $router->post('/API/usuarios/guardar', [UsuarioController::class,'guardarAPI'] );
+$router->post('/API/usuario/modificar', [UsuarioController::class,'modificarApi']);
+$router->post('/API/usuario/eliminar', [UsuarioController::class,'eliminarApi']);
 
 $router->get('/API/roles/buscar', [RolController::class,'buscarAPI'] );
 $router->post('/API/roles/guardar', [RolController::class,'guardarAPI'] );
