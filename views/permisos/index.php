@@ -1,10 +1,7 @@
 <div class="row justify-content-center mb-5">
     <form class="col-lg-8 border bg-light p-3" id="formularioPermisos">
-        <h1>Permisos para el usuario nuevo</h1>
+        <h1>Asignación de roles a los usuarios</h1>
         <input type="Hidden" name="permiso_id" id="permiso_id">
-
-
-
 
         <div class="row mb-4 mt-3">
             <div class="col-lg-12">
