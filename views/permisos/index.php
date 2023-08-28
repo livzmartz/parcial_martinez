@@ -8,7 +8,6 @@
 
         <div class="row mb-4 mt-3">
             <div class="col-lg-12">
-                <div id="permiso_usuario" class="col">
                     <label for="select">USUARIOS</label>
                     <select class="form-control" name="permiso_usuario" id="permiso_usuario">
                         <option value="">Seleccione un usuario</option>
@@ -16,7 +15,6 @@
                             <option value="<?= $usuario['usu_id'] ?>"><?= $usuario['usu_nombre'] ?></option>
                         <?php } ?>
                     </select>
-                </div>
             </div>
         </div>
 

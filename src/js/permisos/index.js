@@ -208,7 +208,7 @@ const modificar = async () => {
     }
 
     const body = new FormData(formulario)
-    const url = 'parcial_martinez/API/permisos/modificar';
+    const url = '/parcial_martinez/API/permisos/modificar';
     const config = {
         method: 'POST',
         body
@@ -257,6 +257,8 @@ const eliminar = async (e) => {
         const body = new FormData();
         body.append('permiso_id', id);
         const url = '/parcial_martinez/API/permisos/eliminar';
+        const headers = new Headers();
+        headers.append("X-Requested-With", "fetch");
         const config = {
             method: 'POST',
             body

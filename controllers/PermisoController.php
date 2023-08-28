@@ -99,7 +99,9 @@ class PermisoController{
 
     public static function modificarAPI(){
         try {
+            echo($_POST['usu_id']);
             $permiso = new Permiso($_POST);
+
             $resultado = $permiso->actualizar();
             
     

@@ -25,7 +25,7 @@ $router->post('/API/usuarios/activar', [UsuarioController::class,'activarAPI']);
 $router->post('/API/usuarios/desactivar', [UsuarioController::class,'desactivarAPI']);
 // $router->get('/usuarios/estadistica', [PermisoController::class,'estadistica']);
 
-
+// /parcial_martinez/API/permisos/modificar
 
 $router->get('/permisos', [PermisoController::class,'index']);
 $router->get('/API/permisos/buscar', [PermisoController::class,'buscarAPI'] );
