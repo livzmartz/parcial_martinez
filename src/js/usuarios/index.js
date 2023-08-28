@@ -210,7 +210,7 @@ const activar = async (e) => {
     const button = e.target;
     const id = button.dataset.id;
 
-    if (await confirmacion('warning', '¿Desea eliminar este registro?')) {
+    if (await confirmacion('warning', '¿Desea activar este usuario?')) {
         const body = new FormData();
         body.append('usu_id', id);
         const url = '/parcial_martinez/API/usuarios/activar';
@@ -253,7 +253,7 @@ const desactivar = async (e) => {
     const button = e.target;
     const id = button.dataset.id;
 
-    if (await confirmacion('warning', '¿Desea eliminar este registro?')) {
+    if (await confirmacion('warning', '¿Desea desactivar este usuario?')) {
         const body = new FormData();
         body.append('usu_id', id);
         const url = '/parcial_martinez/API/usuarios/desactivar';

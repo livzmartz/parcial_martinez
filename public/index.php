@@ -7,6 +7,7 @@ use Controllers\AppController;
 use Controllers\UsuarioController;
 use Controllers\PermisoController;
 use Controllers\RolController;
+use Controllers\ReporteController;
 
 
 $router = new Router();
@@ -22,11 +23,19 @@ $router->post('/API/usuarios/modificar', [UsuarioController::class,'modificarAPI
 $router->post('/API/usuarios/eliminar', [UsuarioController::class,'eliminarAPI']);
 $router->post('/API/usuarios/activar', [UsuarioController::class,'activarAPI']);
 $router->post('/API/usuarios/desactivar', [UsuarioController::class,'desactivarAPI']);
+// $router->get('/usuarios/estadistica', [PermisoController::class,'estadistica']);
+
+
 
 $router->get('/permisos', [PermisoController::class,'index']);
 $router->get('/API/permisos/buscar', [PermisoController::class,'buscarAPI'] );
 $router->post('/API/permisos/guardar', [PermisoController::class,'guardarAPI'] );
 $router->post('/API/permisos/eliminar', [PermisoController::class,'eliminarAPI']);
+
+$router->get('/API/permisos/estadistica/reporte1', [ReporteController::class,'detalleCantidadAPI']);
+$router->get('/API/permisos/estadistica/reporte2', [ReporteController::class,'detalleEstadoAPI']);
+$router->get('/reporte1', [ReporteController::class,'index']);
+$router->get('/reporte2', [ReporteController::class,'index2']);
 
 $router->get('/roles', [RolController::class,'index']);
 $router->get('/API/roles/buscar', [RolController::class,'buscarAPI']);
