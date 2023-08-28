@@ -59,6 +59,19 @@ const datatable = new Datatable('#tablaUsuarios', {
             orderable : false,
             render : (data, type, row, meta) => `<button class="btn btn-danger" data-id='${data}' >Eliminar</button>`
         },
+        {
+            title: 'OPCIONES',
+            data: 'usu_id',
+            searchable: false,
+            orderable: false,
+            render: (data, type, row, meta) => {
+                if (row['usu_estado'].trim() === 'PENDIENTE' || row['usu_estado'].trim() === 'INACTIVO'  ) {
+                    return `<button class="btn btn-success" data-id='${data}' >Activar</button>`;
+                } else {
+                    return `<button class="btn btn-info" data-id='${data}' >Desactivar</button>`;
+                }
+            }
+        }
 
     ]
 })
@@ -192,6 +205,94 @@ const eliminar = async (e) => {
     }
 };
 
+
+const activar = async (e) => {
+    const button = e.target;
+    const id = button.dataset.id;
+
+    if (await confirmacion('warning', '¿Desea eliminar este registro?')) {
+        const body = new FormData();
+        body.append('usu_id', id);
+        const url = '/parcial_martinez/API/usuarios/activar';
+        const config = {
+            method: 'POST',
+            body
+        };
+
+        try {
+            const respuesta = await fetch(url, config);
+            const data = await respuesta.json();
+
+            const { codigo, mensaje, detalle } = data;
+            let icon = 'info';
+            switch (codigo) {
+                case 1:
+                    icon = 'success';
+                    buscar();
+                    break;
+
+                case 0:
+                    icon = 'error';
+                    console.log(detalle);
+                    break;
+
+                default:
+                    break;
+            }
+            Toast.fire({
+                icon,
+                text: mensaje
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+const desactivar = async (e) => {
+    const button = e.target;
+    const id = button.dataset.id;
+
+    if (await confirmacion('warning', '¿Desea eliminar este registro?')) {
+        const body = new FormData();
+        body.append('usu_id', id);
+        const url = '/parcial_martinez/API/usuarios/desactivar';
+        const config = {
+            method: 'POST',
+            body
+        };
+
+        try {
+            const respuesta = await fetch(url, config);
+            const data = await respuesta.json();
+
+            const { codigo, mensaje, detalle } = data;
+            let icon = 'info';
+            switch (codigo) {
+                case 1:
+                    icon = 'success';
+                    buscar();
+                    break;
+
+                case 0:
+                    icon = 'error';
+                    console.log(detalle);
+                    break;
+
+                default:
+                    break;
+            }
+            Toast.fire({
+                icon,
+                text: mensaje
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+
 const cancelarAccion = () => {
     btnGuardar.disabled = false
     btnGuardar.parentElement.style.display = ''
@@ -308,7 +409,6 @@ const modificar = async () => {
     }
 }
 
-
 buscar();
 
 // console.log(formulario);
@@ -318,3 +418,5 @@ btnCancelar.addEventListener('click', cancelarAccion)
 btnModificar.addEventListener('click', modificar)
 datatable.on('click','.btn-warning', traeDatos )
 datatable.on('click','.btn-danger', eliminar )
+datatable.on('click','.btn-success', activar )
+datatable.on('click','.btn-info', desactivar )

@@ -6,7 +6,8 @@ use Exception;
 use Model\Usuario;
 use MVC\Router;
 
-class UsuarioController {
+class UsuarioController
+{
 
     public static function index(Router $router)
     {
@@ -17,23 +18,24 @@ class UsuarioController {
     }
     public static function registro(Router $router)
     {
-       
+
         $router->render('registro_usuario/index', []);
     }
 
-    public static function guardarApi() {
+    public static function guardarApi()
+    {
         try {
-           
+
             $contrasenia = $_POST['usu_password'];
-          
+
             $contraseniaHasheada = password_hash($contrasenia, PASSWORD_DEFAULT);
-             
+
             $_POST['usu_password'] = $contraseniaHasheada;
-               
+
             $usuario = new Usuario($_POST);
-              
+
             $resultado = $usuario->crear();
-    
+
             if ($resultado['resultado'] == 1) {
                 echo json_encode([
                     'mensaje' => 'Registro guardado correctamente',
@@ -53,9 +55,10 @@ class UsuarioController {
             ]);
         }
     }
-    
 
-    public static function buscarAPI(){
+
+    public static function buscarAPI()
+    {
         // $usuarios = usuario::all();
         $usu_nombre = $_GET['usu_nombre'];
         $usu_usuario = $_GET['usu_usuario'];
@@ -71,9 +74,9 @@ class UsuarioController {
         }
 
         try {
-            
+
             $usuario = Usuario::fetchArray($sql);
-    
+
             echo json_encode($usuario);
         } catch (Exception $e) {
             echo json_encode([
@@ -83,63 +86,136 @@ class UsuarioController {
             ]);
         }
 
-       }
+    }
 
-        public static function modificarAPI(){
-            try {
-                $usuario = new Usuario($_POST);
-                $resultado = $usuario->actualizar();
-    
-                if($resultado['resultado'] == 1){
-                    echo json_encode([
-                        'mensaje' => 'Registro modificado correctamente',
-                        'codigo' => 1
-                    ]);
-                }else{
-                    echo json_encode([
-                        'mensaje' => 'Ocurrió un error al actualizar',
-                        'codigo' => 0
-                    ]);
-                }
-                // echo json_encode($resultado);
-            } catch (Exception $e) {
+    public static function modificarAPI()
+    {
+        try {
+            $usuario = new Usuario($_POST);
+            $resultado = $usuario->actualizar();
+
+            if ($resultado['resultado'] == 1) {
                 echo json_encode([
-                    'detalle' => $e->getMessage(),
-                    'mensaje' => 'Ocurrió un error',
+                    'mensaje' => 'Registro modificado correctamente',
+                    'codigo' => 1
+                ]);
+            } else {
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error al actualizar',
                     'codigo' => 0
                 ]);
             }
+            // echo json_encode($resultado);
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
         }
-    
-        public static function eliminarAPI(){
-               
-            try {
-                $usu_id = $_POST['usu_id'];                
-                $usuario = Usuario::find($usu_id);
-                $usuario->usu_situacion = 0;
-                $resultado = $usuario->actualizar();
-        
-                if ($resultado['resultado'] == 1 ){
-                    echo json_encode([
-                        'mensaje' => 'Eliminado correctamente',
-                        'codigo' => 1
-                    ]);
-        
-                }else{
-                    echo json_encode([
-                        'mensaje' => 'Ocurrió un error al eliminar el registro',
-                        'codigo' => 0
-                    ]);
-                }
-                
-            } catch (Exception $e) {
+    }
+
+    public static function eliminarAPI()
+    {
+
+        try {
+            $usu_id = $_POST['usu_id'];
+            $usuario = Usuario::find($usu_id);
+            $usuario->usu_situacion = 0;
+
+            $resultado = $usuario->actualizar();
+
+            if ($resultado['resultado'] == 1) {
                 echo json_encode([
-                    'detalle' => $e->getMessage(),
-                    'mensaje' => 'Ocurrió un error',
+                    'mensaje' => 'Eliminado correctamente',
+                    'codigo' => 1
+                ]);
+
+            } else {
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error al eliminar el registro',
                     'codigo' => 0
                 ]);
             }
-        
-    }    
 
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+
+    }
+
+    public static function activarAPI()
+    {
+
+        try {
+            $usu_id = $_POST['usu_id'];
+            $usuario = Usuario::find($usu_id);
+            $usuario->usu_estado = `ACTIVO`;
+
+            $resultado = $usuario->actualizar();
+
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    'mensaje' => 'Eliminado correctamente',
+                    'codigo' => 1
+                ]);
+
+            } else {
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error al eliminar el registro',
+                    'codigo' => 0
+                ]);
+            }
+
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+
+    }
+    // public static function activarAPI()
+    // {
+    //     try {
+    //         $usu_id = $_POST['usu_id'];
+
+
+    //         $sql = 'UPDATE usuario SET usu_estado = `ACTIVO` WHERE usu_id = '. $usu_id.';';
+
+
+    //         $usuario = Usuario::SQL($sql);
+
+    //         echo json_encode([
+    //             'mensaje' => 'Usuario activado correctamente',
+    //             'codigo' => 1
+    //         ]);
+    //     } catch (Exception $e) {
+    //         echo json_encode([
+
+    //             'mensaje' => 'Ocurrió un error',
+    //             'codigo' => 0
+    //         ]);
+    //     }
+
+    // }
+    public static function desactivarAPI()
+    {
+        $usu_id = $_POST['usu_id'];
+
+        $sql = 'UPDATE usuario SET usu_estado = `INACTIVO` WHERE usu_id = '.$usu_id.'';
+
+
+        $usuario = Usuario::SQL($sql);
+
+        echo json_encode([
+            'mensaje' => 'Usuario desactivado correctamente',
+            'codigo' => 1
+        ]);
+    }
 }
