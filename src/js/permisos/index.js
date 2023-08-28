@@ -9,10 +9,8 @@ const btnBuscar = document.getElementById('btnBuscar');
 const btnModificar = document.getElementById('btnModificar');
 const btnGuardar = document.getElementById('btnGuardar');
 const btnCancelar = document.getElementById('btnCancelar');
-const divPassword = document.getElementById('usu_password');
 const divUsuario = document.getElementById('permiso_usuario');
 const divRol = document.getElementById('permiso_rol');
-divPassword.parentElement.style.display = ' none';
 // divUsuario.parentElement.style.display = 'blcok';
 // divRol.parentElement.style.display = ' block';
 
@@ -33,22 +31,15 @@ const datatable = new DataTable('#tablaPermisos', {
         },
         {
             title: 'USUARIO',
-            data: 'permiso_usuario' 
+            data: 'permiso_usuario'
         },
         {
             title: 'PERMISO',
-            data: 'permiso_rol' 
+            data: 'permiso_rol'
         },
         {
             title: 'ESTADO',
             data: 'usu_estado'
-        },
-        {
-            title: 'MODIFICAR PASSWORD',
-            data: 'permiso_id',
-            searchable: false,
-            orderable: false,
-            render : (data, type, row, meta) => `<button class="btn btn-warning" data-id='${data}' data-usuario='${row["permiso_usuario"]}' data-rol='${row["permiso_rol"]}' data-password='${row["usu_password"]}' >Modificar</button>`
         },
         {
             title: 'ELIMINAR',
@@ -56,19 +47,6 @@ const datatable = new DataTable('#tablaPermisos', {
             searchable: false,
             orderable: false,
             render: (data, type, row, meta) => `<button class="btn btn-danger" data-id='${data}' >Eliminar</button>`
-        },
-        {
-            title: 'ACTIVAR / DESACTIVAR',
-            data: 'usu_id',
-            searchable: false,
-            orderable: false,
-            render: (data, type, row, meta) => {
-                if (row['usu_estado'].trim() === '1') {
-                    return `<button class="btn btn-success" data-id='${data}' >ACTIVAR</button>`;
-                } else {
-                    return `<button class="btn btn-warning" data-id='${data}' >DESACTIVAR</button>`;
-                }
-            }
         },
     ]
 });
@@ -100,6 +78,7 @@ const guardar = async (evento) => {
             case 1:
                 formulario.reset();
                 icon = 'success';
+                buscar();
                 break;
 
             case 0:
@@ -164,12 +143,12 @@ const traeDatos = (e) => {
     const body = new FormData(formulario);
     body.append('permiso_id', id);
     body.append('permiso_usuario', usuario);
-    body.append('permiso_rol', rol); 
+    body.append('permiso_rol', rol);
     body.append('usu_password', password);
-        
+
 };
 const colocarDatos = (dataset) => {
-   
+
     formulario.permiso_usuario.value = dataset.usuario;
     formulario.permiso_rol.value = dataset.rol;
 
@@ -188,22 +167,22 @@ const colocarDatos = (dataset) => {
     btnCancelar.disabled = false
     btnCancelar.parentElement.style.display = '';
 
-  
+
 }
 
 const modificar = async () => {
     if (!validarFormulario(divUsuario)) {
         Toast.fire({
-             icon: 'info',
-             text: 'Debe llenar todos los campos'
-         });
-            return;
-      }
-    
+            icon: 'info',
+            text: 'Debe llenar todos los campos'
+        });
+        return;
+    }
+
     const body = new FormData(formulario)
     const url = 'parcial_martinez/API/permisos/modificar';
     const config = {
-        method : 'POST',
+        method: 'POST',
         body
     }
 
@@ -211,22 +190,20 @@ const modificar = async () => {
         const respuesta = await fetch(url, config)
         const data = await respuesta.json();
         console.log(data)
-        return
-        const {codigo, mensaje,detalle} = data;
+        const { codigo, mensaje, detalle } = data;
         let icon = 'info'
         switch (codigo) {
             case 1:
                 formulario.reset();
                 icon = 'success'
                 buscar();
-                cancelarAccion();
                 break;
-        
+
             case 0:
                 icon = 'error'
                 console.log(detalle)
                 break;
-        
+
             default:
                 break;
         }
@@ -242,8 +219,56 @@ const modificar = async () => {
 }
 
 
+const eliminar = async (e) => {
+    const button = e.target;
+    const id = button.dataset.id;
+
+    if (await confirmacion('warning', '¿Desea eliminar este registro?')) {
+        const body = new FormData();
+        body.append('permiso_id', id);
+        const url = '/parcial_martinez/API/permisos/eliminar';
+        const config = {
+            method: 'POST',
+            body
+        };
+
+
+        try {
+            const respuesta = await fetch(url, config)
+            const data = await respuesta.json();
+            console.log(data)
+            const { codigo, mensaje, detalle } = data;
+            let icon = 'info'
+            switch (codigo) {
+                case 1:
+                    formulario.reset();
+                    icon = 'success'                   
+                    buscar();
+                    break;
+
+                case 0:
+                    icon = 'error'
+                    console.log(detalle)
+                    break;
+
+                default:
+                    break;
+            }
+
+            Toast.fire({
+                icon,
+                text: mensaje
+            })
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+
 buscar()
 formulario.addEventListener('submit', guardar);
 btnBuscar.addEventListener('click', buscar);
-datatable.on('click','.btn-warning', traeDatos )
+datatable.on('click', '.btn-danger', eliminar)
 btnModificar.addEventListener('click', modificar)

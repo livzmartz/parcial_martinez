@@ -6,6 +6,7 @@ use MVC\Router;
 use Controllers\AppController;
 use Controllers\UsuarioController;
 use Controllers\PermisoController;
+use Controllers\RolController;
 
 
 $router = new Router();
@@ -23,7 +24,13 @@ $router->post('/API/usuarios/eliminar', [UsuarioController::class,'eliminarAPI']
 $router->get('/permisos', [PermisoController::class,'index']);
 $router->get('/API/permisos/buscar', [PermisoController::class,'buscarAPI'] );
 $router->post('/API/permisos/guardar', [PermisoController::class,'guardarAPI'] );
-$router->post('/API/permisos/modificar', [PermisoController::class,'modificarAPI']);
+$router->post('/API/permisos/eliminar', [PermisoController::class,'eliminarAPI']);
+
+$router->get('/roles', [RolController::class,'index']);
+$router->get('/API/roles/buscar', [RolController::class,'buscarAPI']);
+$router->post('/API/roles/guardar', [RolController::class,'guardarAPI'] );
+$router->post('/API/roles/modificar', [RolController::class,'modificarAPI']);
+$router->post('/API/roles/eliminar', [RolController::class,'eliminarAPI']);
 
 // Comprueba y valida las rutas, que existan y les asigna las funciones del Controlador
 $router->comprobarRutas();

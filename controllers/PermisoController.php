@@ -57,15 +57,23 @@ class PermisoController{
         $usu_id = $_GET['usu_id'];
         $rol_id = $_GET['rol_id'];
 
-        $sql = "SELECT p.permiso_id, u.usu_nombre AS permiso_usuario,
-        u.usu_id,r.rol_nombre AS permiso_rol,r.rol_id,
-        u.usu_situacion AS usu_estado, u.usu_password FROM permiso p
-    INNER JOIN
-        usuario u ON p.permiso_usuario = u.usu_id
-    INNER JOIN
-        rol r ON p.permiso_rol = r.rol_id
-    WHERE
-        p.permiso_situacion = '1'";
+        $sql = 
+        "SELECT 
+            p.permiso_id, 
+            u.usu_nombre AS permiso_usuario,
+            u.usu_id,
+            r.rol_nombre AS permiso_rol,
+            r.rol_id,
+            u.usu_situacion,
+            u.usu_estado,
+            u.usu_password 
+        FROM permiso p
+        INNER JOIN
+            usuario u ON p.permiso_usuario = u.usu_id
+        INNER JOIN
+            rol r ON p.permiso_rol = r.rol_id
+        WHERE
+            p.permiso_situacion = '1'";
     
     if ($usu_id != '') {
         $sql .= " AND usuarios.usu_id = '$usu_id'";
@@ -89,16 +97,17 @@ class PermisoController{
         }
     }
 
-    public static function modificarAPI()
+    public static function eliminarAPI()
     {
-                
         try {
-            $permiso = new Permiso($_POST);
+            $permiso_id = $_POST['permiso_id'];
+            $permiso = Permiso::find($permiso_id);
+            $permiso->permiso_situacion = 0;
             $resultado = $permiso->actualizar();
 
             if ($resultado['resultado'] == 1) {
                 echo json_encode([
-                    'mensaje' => 'Registro modificado correctamente',
+                    'mensaje' => 'Registro eliminado correctamente',
                     'codigo' => 1
                 ]);
             } else {

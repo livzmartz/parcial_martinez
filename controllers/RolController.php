@@ -7,6 +7,14 @@ use Model\Rol;
 use MVC\Router;
 
 class RolController {
+    
+    public static function index(Router $router)
+    {
+        $roles = Rol::all();
+        $router->render('roles/index', [
+            'roles' => $roles,
+        ]);
+    }
     public static function guardarAPI()
     {
         try {
@@ -37,7 +45,7 @@ class RolController {
     {
         $rol_nombre = $_GET['rol_nombre'] ?? '';
 
-        $sql = "SELECT * FROM roles WHERE rol_situacion = '1' ";
+        $sql = "SELECT * FROM rol WHERE rol_situacion = '1' ";
         if ($rol_nombre != '') {
             $rol_nombre = strtolower($rol_nombre);
             $sql .= " AND LOWER(rol_nombre) LIKE '%$rol_nombre%' ";
