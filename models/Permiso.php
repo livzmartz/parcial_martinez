@@ -4,7 +4,7 @@ namespace Model;
 
 class Permiso extends ActiveRecord{
     protected static $tabla = 'permiso';
-    protected static $columnasDB = ['PERMISO_USUARIO','PERMISO_ROL','PERMISO_SITUACION'];
+    protected static $columnasDB = ['permiso_usuario','permiso_rol','permiso_situacion'];
     protected static $idTabla = 'permiso_id';
     
     public $permiso_id;

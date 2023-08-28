@@ -77,7 +77,7 @@ const buscar = async () => {
         const respuesta = await fetch(url, config)
         const data = await respuesta.json();
 
-        console.log(data);
+        // console.log(data);
         datatable.clear().draw()
         if(data){
             contador = 1;
@@ -243,7 +243,7 @@ const colocarDatos = (dataset) => {
     btnCancelar.disabled = false;
     btnCancelar.parentElement.style.display = '';
     
-    divTabla.style.display = 'none';
+    // divTabla.style.display = 'none';
 };
 
 
@@ -256,10 +256,11 @@ const modificar = async () => {
         })
         return
     }
-
     const body = new FormData(formulario)
+   
     const url = '/parcial_martinez/API/usuarios/modificar';
     const headers = new Headers();
+
     headers.append("X-Requested-With","fetch");
     const config = {
         method: 'POST',
@@ -267,10 +268,9 @@ const modificar = async () => {
     }
 
     try {
-        // fetch(url, config).then( (respuesta) => respuesta.json() ).then(d => data = d)
         const respuesta = await fetch(url, config)
         const data = await respuesta.json();
-        //    console.log(data);
+        console.log(data);
         //    return;
 
         const { codigo, mensaje, detalle } = data;
@@ -311,7 +311,7 @@ const modificar = async () => {
 
 buscar();
 
-console.log(formulario);
+// console.log(formulario);
 formulario.addEventListener('submit', guardar)
 btnBuscar.addEventListener('click', buscar)
 btnCancelar.addEventListener('click', cancelarAccion)

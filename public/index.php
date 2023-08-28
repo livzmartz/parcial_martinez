@@ -14,10 +14,11 @@ $router->setBaseURL('/' . $_ENV['APP_NAME']);
 $router->get('/', [AppController::class,'index']);
 
 $router->get('/usuarios', [UsuarioController::class,'index']);
+$router->get('/registroUsuario', [UsuarioController::class,'registro']);
 $router->get('/API/usuarios/buscar', [UsuarioController::class,'buscarAPI']);
 $router->post('/API/usuarios/guardar', [UsuarioController::class,'guardarAPI'] );
-$router->post('/API/usuario/modificar', [UsuarioController::class,'modificarAPI']);
-$router->post('/API/usuario/eliminar', [UsuarioController::class,'eliminarAPI']);
+$router->post('/API/usuarios/modificar', [UsuarioController::class,'modificarAPI']);
+$router->post('/API/usuarios/eliminar', [UsuarioController::class,'eliminarAPI']);
 
 $router->get('/permisos', [PermisoController::class,'index']);
 $router->get('/API/permisos/buscar', [PermisoController::class,'buscarAPI'] );

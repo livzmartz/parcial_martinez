@@ -3,47 +3,41 @@
         <h1>Permisos para el usuario nuevo</h1>
         <input type="Hidden" name="permiso_id" id="permiso_id">
 
-     
-        <div class="row mb-4 mt-3">
-            <div class="col-lg-12">
-                <div id="usu_password" class="col">
-                    <label for="usu_password">Ingrese una nueva contraseña</label>
-                    <input type="password" name="usu_password" id="usu_password" class="form-control">
-                </div>
-            </div>
-        </div>
+
+
 
         <div class="row mb-4 mt-3">
             <div class="col-lg-12">
-                <div id="permiso_usuario"  class="col">
+                <div id="permiso_usuario" class="col">
                     <label for="select">USUARIOS</label>
                     <select class="form-control" name="permiso_usuario" id="permiso_usuario">
                         <option value="">Seleccione un usuario</option>
                         <?php foreach ($usuarios as $usuario) { ?>
-                            <option value="<?= $usuario['usu_id']  ?>"><?= $usuario['usu_nombre']  ?></option>
-                        <?php  }  ?>
+                            <option value="<?= $usuario['usu_id'] ?>"><?= $usuario['usu_nombre'] ?></option>
+                        <?php } ?>
                     </select>
                 </div>
             </div>
         </div>
 
-      
+
         <div class="row mb-4 mt-3">
             <div class="col-lg-12">
                 <label for="select">ROLES</label>
                 <select class="form-control" name="permiso_rol" id="permiso_rol">
                     <option value="">Seleccione un rol</option>
                     <?php foreach ($roles as $rol) { ?>
-                        <option value="<?= $rol['rol_id']  ?>"><?= $rol['rol_nombre']  ?></option>
-                    <?php  }  ?>
+                        <option value="<?= $rol['rol_id'] ?>"><?= $rol['rol_nombre'] ?></option>
+                    <?php } ?>
                 </select>
             </div>
         </div>
 
-     
+
         <div class="row mb-3">
             <div class="col">
-                <button type="submit" form="formularioPermisos" id="btnGuardar" data-saludo="hola" data-saludo2="hola2" class="btn btn-primary w-100">Guardar</button>
+                <button type="submit" form="formularioPermisos" id="btnGuardar" data-saludo="hola" data-saludo2="hola2"
+                    class="btn btn-primary w-100">Guardar</button>
             </div>
             <div class="col">
                 <button type="button" id="btnModificar" class="btn btn-warning w-100">Modificar</button>
@@ -66,4 +60,4 @@
         </table>
     </div>
 </div>
-<script src="<?= asset('./build/js/permisos/index.js')  ?>"></script>
+<script src="<?= asset('./build/js/permisos/index.js') ?>"></script>

@@ -15,6 +15,11 @@ class UsuarioController {
             'usuarios' => $usuario,
         ]);
     }
+    public static function registro(Router $router)
+    {
+       
+        $router->render('registro_usuario/index', []);
+    }
 
     public static function guardarApi() {
         try {
@@ -92,7 +97,7 @@ class UsuarioController {
                     ]);
                 }else{
                     echo json_encode([
-                        'mensaje' => 'Ocurrió un error',
+                        'mensaje' => 'Ocurrió un error al actualizar',
                         'codigo' => 0
                     ]);
                 }
@@ -109,9 +114,8 @@ class UsuarioController {
         public static function eliminarAPI(){
                
             try {
-                $usu_id = $_POST['usu_id'];
+                $usu_id = $_POST['usu_id'];                
                 $usuario = Usuario::find($usu_id);
-    
                 $usuario->usu_situacion = 0;
                 $resultado = $usuario->actualizar();
         
