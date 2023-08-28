@@ -6,8 +6,7 @@ use Exception;
 use Model\Usuario;
 use MVC\Router;
 
-class UsuarioController
-{
+class UsuarioController{
 
     public static function index(Router $router)
     {
@@ -148,25 +147,24 @@ class UsuarioController
 
     }
 
-    public static function activarAPI()
-    {
+    public static function activarAPI(){
 
         try {
             $usu_id = $_POST['usu_id'];
             $usuario = Usuario::find($usu_id);
-            $usuario->usu_estado = `ACTIVO`;
+            $usuario->usu_estado = 'ACTIVO';
 
             $resultado = $usuario->actualizar();
 
             if ($resultado['resultado'] == 1) {
                 echo json_encode([
-                    'mensaje' => 'Eliminado correctamente',
+                    'mensaje' => 'Se ha activado el usuario correctamente',
                     'codigo' => 1
                 ]);
 
             } else {
                 echo json_encode([
-                    'mensaje' => 'Ocurrió un error al eliminar el registro',
+                    'mensaje' => 'Ocurrió un error al activar el usuario',
                     'codigo' => 0
                 ]);
             }
@@ -180,42 +178,36 @@ class UsuarioController
         }
 
     }
-    // public static function activarAPI()
-    // {
-    //     try {
-    //         $usu_id = $_POST['usu_id'];
+    
+    public static function desactivarAPI(){
 
+        try {
+            $usu_id = $_POST['usu_id'];
+            $usuario = Usuario::find($usu_id);
+            $usuario->usu_estado = 'INACTIVO';
 
-    //         $sql = 'UPDATE usuario SET usu_estado = `ACTIVO` WHERE usu_id = '. $usu_id.';';
+            $resultado = $usuario->actualizar();
 
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    'mensaje' => 'Se ha desactivado el usuario correctamente',
+                    'codigo' => 1
+                ]);
 
-    //         $usuario = Usuario::SQL($sql);
+            } else {
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error al desactivar el usuario',
+                    'codigo' => 0
+                ]);
+            }
 
-    //         echo json_encode([
-    //             'mensaje' => 'Usuario activado correctamente',
-    //             'codigo' => 1
-    //         ]);
-    //     } catch (Exception $e) {
-    //         echo json_encode([
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
 
-    //             'mensaje' => 'Ocurrió un error',
-    //             'codigo' => 0
-    //         ]);
-    //     }
-
-    // }
-    public static function desactivarAPI()
-    {
-        $usu_id = $_POST['usu_id'];
-
-        $sql = 'UPDATE usuario SET usu_estado = `INACTIVO` WHERE usu_id = '.$usu_id.'';
-
-
-        $usuario = Usuario::SQL($sql);
-
-        echo json_encode([
-            'mensaje' => 'Usuario desactivado correctamente',
-            'codigo' => 1
-        ]);
     }
-}
+ }
