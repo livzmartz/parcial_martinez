@@ -20,6 +20,8 @@ $router->get('/API/usuarios/buscar', [UsuarioController::class,'buscarAPI']);
 $router->post('/API/usuarios/guardar', [UsuarioController::class,'guardarAPI'] );
 $router->post('/API/usuarios/modificar', [UsuarioController::class,'modificarAPI']);
 $router->post('/API/usuarios/eliminar', [UsuarioController::class,'eliminarAPI']);
+$router->post('/API/usuarios/activar', [UsuarioController::class,'activarAPI']);
+$router->post('/API/usuarios/desactivar', [UsuarioController::class,'desactivarAPI']);
 
 $router->get('/permisos', [PermisoController::class,'index']);
 $router->get('/API/permisos/buscar', [PermisoController::class,'buscarAPI'] );
