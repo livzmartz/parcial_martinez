@@ -10,7 +10,7 @@ use MVC\Router;
 class PermisoController{
     public static function index(Router $router) {
 
-    $usuario= Permiso::all();
+        $usuario= Permiso::all();
         $rol= Permiso::all();
         $usuarios = static::usuarios();
         $roles = static::roles();
@@ -97,6 +97,32 @@ class PermisoController{
         }
     }
 
+    public static function modificarAPI(){
+        try {
+            $permiso = new Permiso($_POST);
+            $resultado = $permiso->actualizar();
+            
+    
+            if ($resultado['resultado'] == 1) {
+                echo json_encode([
+                    'mensaje' => 'Registro modificado correctamente',
+                    'codigo' => 1
+                ]);
+            } else {
+                echo json_encode([
+                    'mensaje' => 'Ocurrió un error',
+                    'codigo' => 0
+                ]);
+            }
+            // echo json_encode($resultado);
+        } catch (Exception $e) {
+            echo json_encode([
+                'detalle' => $e->getMessage(),
+                'mensaje' => 'Ocurrió un error',
+                'codigo' => 0
+            ]);
+        }
+    }
     public static function eliminarAPI()
     {
         try {

@@ -42,6 +42,15 @@ const datatable = new DataTable('#tablaPermisos', {
             data: 'usu_estado'
         },
         {
+            title : 'MODIFICAR',
+            data: 'permiso_id',
+            searchable : false,
+            orderable : false,
+            render : (data, type, row, meta) =>`<button class="btn btn-warning" data-id='${data}' data-usuario='${row["usu_id"]}'
+            data-rol='${row["rol_id"]}'>Modificar</button>`
+
+        },
+        {
             title: 'ELIMINAR',
             data: 'permiso_id',
             searchable: false,
@@ -125,37 +134,56 @@ const buscar = async () => {
         console.log(error);
     }
 }
+
+const cancelarAccion = () => {
+    btnGuardar.disabled = false
+    btnGuardar.parentElement.style.display = ''
+    btnBuscar.disabled = false
+    btnBuscar.parentElement.style.display = ''
+    btnModificar.disabled = true
+    btnModificar.parentElement.style.display = 'none'
+    btnCancelar.disabled = true
+    btnCancelar.parentElement.style.display = 'none'
+    divTabla.style.display = ''
+}
+
+
 const traeDatos = (e) => {
     const button = e.target;
+    console.log(button);
     const id = button.dataset.id;
     const usuario = button.dataset.usuario;
     const rol = button.dataset.rol;
-    const password = button.dataset.password;
+
+    // console.log(id);
+    // console.log(usuario);
+    // console.log(rol);
+
+
+
 
     const dataset = {
         id,
         usuario,
-        rol,
-        password
+        rol
     };
+
     console.log(dataset)
     colocarDatos(dataset);
     const body = new FormData(formulario);
     body.append('permiso_id', id);
     body.append('permiso_usuario', usuario);
     body.append('permiso_rol', rol);
-    body.append('usu_password', password);
 
 };
 const colocarDatos = (dataset) => {
 
     formulario.permiso_usuario.value = dataset.usuario;
     formulario.permiso_rol.value = dataset.rol;
-
     formulario.permiso_id.value = dataset.id;
-    formulario.usu_password.value = dataset.password;
+   
 
-    divPassword.parentElement.style.display = ' block';
+    // divPassword.parentElement.style.display = ' block';
     // divUsuario.parentElement.style.display = 'none';
     // divRol.parentElement.style.display = 'none';
     btnGuardar.disabled = true
@@ -171,7 +199,7 @@ const colocarDatos = (dataset) => {
 }
 
 const modificar = async () => {
-    if (!validarFormulario(divUsuario)) {
+    if (!validarFormulario(formulario)) {
         Toast.fire({
             icon: 'info',
             text: 'Debe llenar todos los campos'
@@ -185,7 +213,9 @@ const modificar = async () => {
         method: 'POST',
         body
     }
-
+    for (var pair of body.entries()) {
+        console.log('"'+pair[0]+ '", "' + pair[1]+'"'); 
+    }
     try {
         const respuesta = await fetch(url, config)
         const data = await respuesta.json();
@@ -268,7 +298,9 @@ const eliminar = async (e) => {
 
 
 buscar()
-formulario.addEventListener('submit', guardar);
-btnBuscar.addEventListener('click', buscar);
-datatable.on('click', '.btn-danger', eliminar)
+formulario.addEventListener('submit', guardar)
+btnBuscar.addEventListener('click', buscar)
+btnCancelar.addEventListener('click', cancelarAccion)
 btnModificar.addEventListener('click', modificar)
+datatable.on('click','.btn-warning', traeDatos )
+datatable.on('click','.btn-danger', eliminar )

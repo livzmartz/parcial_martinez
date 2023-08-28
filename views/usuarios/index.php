@@ -1,4 +1,4 @@
-<h1 class="text-center">Registro de usuario</h1>
+<h1 class="text-center">Solicitudes de usuario</h1>
 <div class="row justify-content-center mb-5">
     <form class="col-lg-8 border bg-light p-3" id="formularioUsuarios">
         <input type="hidden" name="usu_id" id="usu_id">

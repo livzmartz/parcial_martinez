@@ -30,6 +30,7 @@ $router->post('/API/usuarios/desactivar', [UsuarioController::class,'desactivarA
 $router->get('/permisos', [PermisoController::class,'index']);
 $router->get('/API/permisos/buscar', [PermisoController::class,'buscarAPI'] );
 $router->post('/API/permisos/guardar', [PermisoController::class,'guardarAPI'] );
+$router->post('/API/permisos/modificar', [PermisoController::class,'modificarAPI'] );
 $router->post('/API/permisos/eliminar', [PermisoController::class,'eliminarAPI']);
 
 $router->get('/API/permisos/estadistica/reporte1', [ReporteController::class,'detalleCantidadAPI']);

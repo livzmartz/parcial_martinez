@@ -90,6 +90,12 @@ class UsuarioController{
     public static function modificarAPI()
     {
         try {
+            $contrasenia = $_POST['usu_password'];
+
+            $contraseniaHasheada = password_hash($contrasenia, PASSWORD_DEFAULT);
+
+            $_POST['usu_password'] = $contraseniaHasheada;
+            
             $usuario = new Usuario($_POST);
             $resultado = $usuario->actualizar();
 
