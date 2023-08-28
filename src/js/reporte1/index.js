@@ -7,7 +7,7 @@ const context = canvas.getContext('2d');
 
 
 const chartUsuariosRol = new Chart(context, {
-    type : 'pie',
+    type : 'doughnut',
     data : {
         labels : [],
         datasets : [
